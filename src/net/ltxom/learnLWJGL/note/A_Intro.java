@@ -20,7 +20,7 @@ import org.lwjgl.glfw.GLFWVidMode;
  * @author ElegantWhelp Commented and Revised by LTXOM
  * @version 4/24/2018
  */
-public class Intro
+public class A_Intro
 {
 
 	public static void main(String[] args)
