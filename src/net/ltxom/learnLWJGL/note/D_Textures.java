@@ -45,6 +45,9 @@ public class D_Textures
 		initWindow(windowTitle);
 
 		GL.createCapabilities();
+		
+		// 启动2D纹理
+		glEnable(GL_TEXTURE_2D);
 
 		// 下面是用awt的BufferedImage的到图片的像素信息
 		// BufferedImage 子类描述具有可访问图像数据缓冲区的 Image 
@@ -114,8 +117,6 @@ public class D_Textures
 		{
 			e.printStackTrace();
 		}
-		// 启动2D纹理
-		glEnable(GL_TEXTURE_2D);
 
 		while (!glfwWindowShouldClose(window))
 		{
@@ -161,7 +162,6 @@ public class D_Textures
 		glfwMakeContextCurrent(window);
 
 	}
-
 
 	public static void main(String[] args)
 	{
