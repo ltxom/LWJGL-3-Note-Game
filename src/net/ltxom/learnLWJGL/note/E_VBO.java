@@ -39,7 +39,7 @@ import org.lwjgl.opengl.GL;
  * https://www.youtube.com/watch?v=2Q7K2Ma5u1U&list=PLILiqflMilIxta2xKk2EftiRHD4nQGW0u&index=5
  * 
  * @author ElegantWhelp Commented and Revised by LTXOM
- * @version 4/27/2018
+ * @version 4/30/2018
  */
 public class E_VBO
 {
@@ -265,11 +265,11 @@ public class E_VBO
 				// 没有正确扫描图片像素导致的
 				0, 1, // TOP LEFT
 				1, 1, // TOP RIGHT
-				1, 0, // 
+				1, 0, // BOT RIGHT
 
-				1, 0, //
-				0, 0, //
-				0, 1//
+				1, 0, // TOP LEFT
+				0, 0, // TOP RIGHT
+				0, 1// BOT RIGHT
 		};
 
 		new E_VBO("res/uw-quad.png", "VBO", quadVertices, texture);
