@@ -33,7 +33,7 @@ import org.lwjgl.opengl.GL;
  * https://www.youtube.com/watch?v=7NsXcedg5fo&list=PLILiqflMilIxta2xKk2EftiRHD4nQGW0u&index=6
  * 
  * @author ElegantWhelp Commented and Revised by LTXOM
- * @version 4/30/2018
+ * @version 5/3/2018 
  */
 
 public class F_Indices
@@ -89,18 +89,6 @@ public class F_Indices
 
 		this.bindTexture(file);
 
-		while (!glfwWindowShouldClose(window))
-		{
-			glfwPollEvents();
-
-			glClear(GL_COLOR_BUFFER_BIT);
-
-			glBindTexture(GL_TEXTURE_2D, texture_file_id);
-
-			this.render();
-
-			glfwSwapBuffers(window);
-		}
 	}
 
 	public void render()
@@ -124,6 +112,38 @@ public class F_Indices
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
+	}
+
+	public void act()
+	{
+		while (!glfwWindowShouldClose(window))
+		{
+			glfwPollEvents();
+
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			glBindTexture(GL_TEXTURE_2D, texture_file_id);
+
+			this.render();
+
+			glfwSwapBuffers(window);
+		}
+	}
+
+	public void act(G_Shaders shader)
+	{
+		while (!glfwWindowShouldClose(window))
+		{
+			glfwPollEvents();
+
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			glBindTexture(GL_TEXTURE_2D, texture_file_id);
+			shader.bind();
+			this.render();
+
+			glfwSwapBuffers(window);
+		}
 	}
 
 	private int height;
@@ -218,7 +238,7 @@ public class F_Indices
 				2, 3, 0 // 对应上方quadVertices的坐标，绘制点2、3、0即为Bot Triangle
 		};
 
-		new F_Indices("res/uw-quad.png", "VBO", quadVertices, texture, indices);
+		new F_Indices("res/uw-quad.png", "VBO", quadVertices, texture, indices).act();
 	}
 
 }
