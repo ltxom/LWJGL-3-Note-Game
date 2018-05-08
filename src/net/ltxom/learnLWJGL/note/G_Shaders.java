@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
 import static org.lwjgl.opengl.GL20.GL_VALIDATE_STATUS;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glBindAttribLocation;
 import static org.lwjgl.opengl.GL20.glCompileShader;
@@ -17,7 +18,7 @@ import static org.lwjgl.opengl.GL20.glGetShaderi;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUseProgram;
-import static org.lwjgl.opengl.GL20.glValidateProgram;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -77,7 +78,9 @@ public class G_Shaders
 		glAttachShader(program, fragmentShader);
 
 		glBindAttribLocation(program, 0, "vertices");
-
+		glBindAttribLocation(program, 1, "textures");
+		
+		
 		glLinkProgram(program);
 		if (glGetProgrami(program, GL_LINK_STATUS) != 1)
 		{
@@ -90,6 +93,17 @@ public class G_Shaders
 		{
 			System.err.println(glGetProgramInfoLog(program));
 			System.exit(0);
+		}
+	}
+	
+	public void setUniform(String name, int value)
+	{
+		int location = glGetUniformLocation(program, name);
+
+		if (location != -1)
+		{
+			// pass value to variable in "program's" file 
+			glUniform1i(location, value);
 		}
 	}
 
@@ -150,7 +164,7 @@ public class G_Shaders
 				2, 3, 0 // 对应上方quadVertices的坐标，绘制点2、3、0即为Bot Triangle
 		};
 
-		new F_Indices("res/uw-quad.png", "VBO", quadVertices, texture, indices)
+		new F_Indices("res/uw-quad.png", "Shaders", quadVertices, texture, indices)
 				.act(new G_Shaders("shaders/shader.vertices", "shaders/shader.fragment"));
 
 	}

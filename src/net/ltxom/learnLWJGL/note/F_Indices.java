@@ -9,7 +9,9 @@ import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -33,7 +35,7 @@ import org.lwjgl.opengl.GL;
  * https://www.youtube.com/watch?v=7NsXcedg5fo&list=PLILiqflMilIxta2xKk2EftiRHD4nQGW0u&index=6
  * 
  * @author ElegantWhelp Commented and Revised by LTXOM
- * @version 5/3/2018 
+ * @version 5/3/2018
  */
 
 public class F_Indices
@@ -54,6 +56,9 @@ public class F_Indices
 		GL.createCapabilities();
 
 		glEnable(GL_TEXTURE_2D);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		draw_count = indices.length;
 
@@ -87,21 +92,27 @@ public class F_Indices
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		this.bindTexture(file);
+		this.bindTexture(file, 0);
 
 	}
 
 	public void render()
 	{
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		//glEnableClientState(GL_VERTEX_ARRAY);
+		//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertices_id);
-		glVertexPointer(3, GL_FLOAT, 0, 0);
+		//glVertexPointer(3, GL_FLOAT, 0, 0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, texture_id);
-		glTexCoordPointer(2, GL_FLOAT, 0, 0);
+		//glTexCoordPointer(2, GL_FLOAT, 0, 0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
 
+		
 		// 使用索引就无需使用glDrawArrays()了
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 		glDrawElements(GL_TRIANGLES, draw_count, GL_UNSIGNED_INT, 0);
@@ -109,8 +120,11 @@ public class F_Indices
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+
+		//glDisableClientState(GL_VERTEX_ARRAY);
+		//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	}
 
@@ -140,6 +154,9 @@ public class F_Indices
 
 			glBindTexture(GL_TEXTURE_2D, texture_file_id);
 			shader.bind();
+
+			// Set Uniform
+			shader.setUniform("sampler", 0);
 			this.render();
 
 			glfwSwapBuffers(window);
@@ -151,7 +168,7 @@ public class F_Indices
 	private int texture_file_id;
 	private BufferedImage bi;
 
-	public void bindTexture(String file)
+	public void bindTexture(String file, int sampler)
 	{
 
 		try
@@ -181,6 +198,10 @@ public class F_Indices
 			pixels.flip();
 
 			texture_file_id = glGenTextures();
+
+			//
+			if (sampler >= 0 && sampler <= 31)
+				glActiveTexture(GL_TEXTURE0);
 
 			glBindTexture(GL_TEXTURE_2D, texture_file_id);
 
