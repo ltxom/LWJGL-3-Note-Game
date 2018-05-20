@@ -1,6 +1,9 @@
 package net.ltxom.glGame.resourses;
 
+import static net.ltxom.glGame.util.Terminal.PREFIX;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * 继承DataResource，储存XML类型的数据资源，封装了基本XML解析功能
@@ -45,6 +48,15 @@ public class XMLDataResourse extends DataResource
 	{
 		super(path);
 
+		matchMap = new ArrayList<String>();
+		waitList = new ArrayList<String>();
+		analyzeXML();
+	}
+
+	public XMLDataResourse(ArrayList<String> content)
+	{
+		super(content);
+		
 		matchMap = new ArrayList<String>();
 		waitList = new ArrayList<String>();
 		analyzeXML();
@@ -143,4 +155,91 @@ public class XMLDataResourse extends DataResource
 	{
 		return matchMap;
 	}
+
+	public String getTagParameter(int matchMapIndex, String parameter)
+	{
+		String result = null;
+		String[] tagIndexArr = matchMap.get(matchMapIndex).split(",");
+		int startAt = Integer.parseInt(tagIndexArr[2].trim()) - 1;
+		String tagName = tagIndexArr[0].trim();
+		String line = this.getSource().get(startAt);
+
+		if (!line.contains(" " + parameter + "="))
+		{
+			System.err.println(PREFIX + "XML资源文件" + this.getPath() + "第" + (startAt + 1) + "行的" + tagName + "中不存在"
+					+ parameter + "属性，请检查");
+			return null;
+		}
+
+		String halfResult = line.substring(line.indexOf(parameter) + (parameter + "=\"").length());
+		result = halfResult.substring(0, halfResult.indexOf("\""));
+
+		return result;
+	}
+
+	public HashMap<String, String> getTagParameters(int matchMapIndex)
+	{
+		HashMap<String, String> result = new HashMap<String, String>();
+
+		String[] tagIndexArr = matchMap.get(matchMapIndex).split(",");
+		int startAt = Integer.parseInt(tagIndexArr[2].trim()) - 1;
+		String tagName = tagIndexArr[0].trim();
+		String line = this.getSource().get(startAt);
+
+		if (!line.contains("="))
+		{
+			System.err.println(
+					PREFIX + "XML资源文件" + this.getPath() + "第" + (startAt + 1) + "行的" + tagName + "中不存在" + "任何属性，请检查");
+			return null;
+		}
+		line = line.trim();
+
+		while (line.contains("="))
+		{
+			String firstHalf = line.substring(0, line.indexOf("="));
+			String secondHalf = line.substring(line.indexOf("="));
+
+			result.put(firstHalf.substring(firstHalf.indexOf(" ") + 1),
+					secondHalf.substring(2, secondHalf.substring(2).indexOf("\"") + 2));
+
+			line = line.substring(line.indexOf("=") + 1, line.length());
+
+		}
+
+		return result;
+	}
+
+	public ArrayList<String> getContent(int matchMapIndex)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		String[] tagIndexArr = matchMap.get(matchMapIndex).split(",");
+		int tageType = Integer.parseInt(tagIndexArr[1].trim());
+		int startAt = Integer.parseInt(tagIndexArr[2].trim()) - 1;
+		int endAt = Integer.parseInt(tagIndexArr[3].trim()) - 1;
+
+		String tagName = tagIndexArr[0].trim();
+
+		if (tageType == 1)
+		{
+			System.err.println(PREFIX + "标签" + tagName + "是属性标签，没有数据！");
+			return null;
+		}
+		if (startAt == endAt)
+		{
+			String temp = this.getSource().get(startAt);
+			temp = temp.substring(temp.indexOf(">") + 1);
+			temp = temp.substring(0, temp.indexOf("<"));
+			result.add(temp);
+			return result;
+		}
+
+		for (int i = startAt + 1; i < endAt; i++)
+		{
+			result.add(this.getSource().get(i));
+
+		}
+
+		return result;
+	}
+
 }

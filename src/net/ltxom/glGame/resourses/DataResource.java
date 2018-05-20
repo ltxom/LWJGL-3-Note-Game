@@ -51,6 +51,16 @@ public class DataResource extends Resourse
 	}
 
 	/**
+	 * 也可以从ArrayList中读取数据
+	 */
+	public DataResource(ArrayList<String> sourceList)
+	{
+		super(ResourseType.DATA);
+		this.sourceList = sourceList;
+
+	}
+
+	/**
 	 * @return 得到数据资源的内容
 	 */
 	public ArrayList<String> getSource()

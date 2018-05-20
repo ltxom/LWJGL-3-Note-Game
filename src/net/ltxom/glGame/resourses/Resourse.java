@@ -13,7 +13,7 @@ public abstract class Resourse
 {
 	private String path;
 	private ResourseType type;
-	private File file;
+	private File file = null;
 
 	/**
 	 * @param path
@@ -36,11 +36,18 @@ public abstract class Resourse
 		}
 	}
 
+	public Resourse(ResourseType type)
+	{
+		this.path = "LOCAL DATA";
+		this.type = type;
+	}
+
 	/**
 	 * @return 返回资源文件的文件路径
 	 */
 	public String getPath()
 	{
+
 		return path;
 	}
 
@@ -49,6 +56,10 @@ public abstract class Resourse
 	 */
 	public File getFile()
 	{
+		if (path.equals("LOCAL DATA"))
+		{
+			System.err.println(PREFIX + "该资源没有文件对象，可能是由于该资源对象是文件资源的子资源");
+		}
 		return file;
 	}
 
