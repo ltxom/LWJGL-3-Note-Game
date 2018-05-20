@@ -9,41 +9,22 @@ import java.util.HashMap;
  * 继承DataResource，储存XML类型的数据资源，封装了基本XML解析功能
  * 
  * @author LTXOM
- * @version 5/19/2018
+ * @version 5/20/2018
  */
 public class XMLDataResourse extends DataResource
 {
 	private String version;
 	private String encoding;
 
-	// matchMap用来储存分析到的XML标签对
-	// 比如下列XML：
-	// 1:<nodeA>
-	// 2: <nodeB>
-	// 3: abcdf
-	// 4: </nodeB>
-	// 5: <nodeC />
-	// 6: <nodeD>abc</nodeD>
-	// 7: <nodeB>
-	// 8: 123
-	// 9: </nodeB>
-	// 10:</nodeA>
-
-	// 在matchMap中将会以String列表存储四个信息
-	// 第一个是node名称，第二个是连接状态，0是分开标签，1是单独标签
-	// 第三第四个是开始/结束位置
-	// 例如以下信息：
-	// 0: "nodeA, 0, 1, 10"
-	// 1: "nodeB, 0, 2, 4"
-	// 2: "nodeC, 1, 5, 5"
-	// 3: "nodeD, 0, 6, 6"
-	// 4: "nodeB, 0, 7, 9"
 	private ArrayList<String> matchMap;
 
 	// 找到首标签后但尾标签不在当前行会将
 	// 首标签坐标数据放入waitList中
 	private ArrayList<String> waitList;
 
+	/**
+	 * 通过本地文件构造XML资源对象
+	 * */
 	public XMLDataResourse(String path)
 	{
 		super(path);
@@ -53,10 +34,13 @@ public class XMLDataResourse extends DataResource
 		analyzeXML();
 	}
 
+	/**
+	 * 通过ArrayList构造XML资源对象，一般用于本地文件资源对象的子集
+	 * */
 	public XMLDataResourse(ArrayList<String> content)
 	{
 		super(content);
-		
+
 		matchMap = new ArrayList<String>();
 		waitList = new ArrayList<String>();
 		analyzeXML();
@@ -141,21 +125,60 @@ public class XMLDataResourse extends DataResource
 		}
 	}
 
+	/**
+	 * @return 返回当前XML版本
+	 * */
 	public String getVersion()
 	{
 		return version;
 	}
 
+	/**
+	 * @return 返回当前XML编码格式
+	 * */
 	public String getEncoding()
 	{
 		return encoding;
 	}
 
+	/**
+	 * matchMap用来储存分析到的XML标签对
+	 * 比如下列XML：
+	 * 1:<nodeA>
+	 * 2: <nodeB>
+	 * 3: abcdf
+	 * 4: </nodeB>
+	 * 5: <nodeC />
+	 * 6: <nodeD>abc</nodeD>
+	 * 7: <nodeB>
+	 * 8: 123
+	 * 9: </nodeB>
+	 * 10:</nodeA>
+	 * 
+	 * 在matchMap中将会以String列表存储四个信息
+	 * 第一个是node名称，第二个是连接状态，0是分开标签，1是单独标签
+	 * 第三第四个是开始/结束位置
+	 * 例如以下信息：
+	 * 0: "nodeA, 0, 1, 10"
+	 * 1: "nodeB, 0, 2, 4"
+	 * 2: "nodeC, 1, 5, 5"
+	 * 3: "nodeD, 0, 6, 6"
+	 * 4: "nodeB, 0, 7, 9"
+	 * @return 返回matchMap
+	 * */
 	public ArrayList<String> getMatchMap()
 	{
 		return matchMap;
 	}
 
+	/**
+	 * 得到指定标签的参数值
+	 * 
+	 * @param matchMapIndex 要得到的标签在matchMap中的索引位置
+	 * @param parameter 想要得到的参数
+	 * 
+	 * @return 若不存在参数，将会返回null
+	 * */
 	public String getTagParameter(int matchMapIndex, String parameter)
 	{
 		String result = null;
@@ -177,6 +200,11 @@ public class XMLDataResourse extends DataResource
 		return result;
 	}
 
+	/**
+	 * 得到指定标签的所有参数
+	 * @param matchMapIndex 要得到的标签在matchMap中的位置
+	 * @return 返回数据以HashMap键值对存储
+	 * */
 	public HashMap<String, String> getTagParameters(int matchMapIndex)
 	{
 		HashMap<String, String> result = new HashMap<String, String>();
@@ -209,6 +237,11 @@ public class XMLDataResourse extends DataResource
 		return result;
 	}
 
+	/**
+	 * 得到两个标签之间所有的内容
+	 * @param matchMapIndex 要得到的内容在matchMap中的位置
+	 * @return 若标签只有属性没有内容，则会返回null
+	 * */
 	public ArrayList<String> getContent(int matchMapIndex)
 	{
 		ArrayList<String> result = new ArrayList<String>();
