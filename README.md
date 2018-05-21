@@ -2,11 +2,13 @@
 
 Here's notes wrriten in Chinese I took when learning LWJGL 3 & OpenGL.
 
+Codes are in the package of net.ltxom.learnLWJGL.note
+
+Rest of them is a game project that I'm making by LWJGL
 
 
 
-#### @author ElegantWhelp Commented and Revised by LTXOM
-
+#### Video notes from @author ElegantWhelp commented and revised by LTXOM
 
 GitHub: https://github.com/ElegantWhelp/
 
