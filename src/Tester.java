@@ -1,14 +1,14 @@
-import net.ltxom.glGame.resourses.TilesXMLDataResource;
+import net.ltxom.glGame.resources.MapXMLDataResource;
+import net.ltxom.glGame.resources.TilesXMLDataResource;
 
 public class Tester
 {
 
 	public static void main(String[] args)
 	{
-		TilesXMLDataResource txdr = new TilesXMLDataResource("res/mapsData/TilesData/OutsideObjects1.tsx");
-		System.out.println(txdr.getColliders().getTileName());
-		System.out.println(txdr.getColliders().getX(106));
-		
+		MapXMLDataResource mxdr = new MapXMLDataResource("res/mapsData/Maps/Demo.tmx");
+		System.out.println(mxdr.getLayer(0).layerContent.toString());
+
 	}
 
 }
