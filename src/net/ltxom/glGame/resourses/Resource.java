@@ -9,10 +9,10 @@ import static net.ltxom.glGame.util.Terminal.PREFIX;
  * @author LTXOM
  * @version 5/19/2018
  */
-public abstract class Resourse
+public abstract class Resource
 {
 	private String path;
-	private ResourseType type;
+	private ResourceType type;
 	private File file = null;
 
 	/**
@@ -20,9 +20,9 @@ public abstract class Resourse
 	 *            资源文件地址，必须指向单个文件
 	 * @param type
 	 *            区别资源类型的枚举
-	 * @see ResourseType
+	 * @see ResourceType
 	 */
-	public Resourse(String path, ResourseType type)
+	public Resource(String path, ResourceType type)
 	{
 		this.path = path;
 		this.type = type;
@@ -36,7 +36,7 @@ public abstract class Resourse
 		}
 	}
 
-	public Resourse(ResourseType type)
+	public Resource(ResourceType type)
 	{
 		this.path = "LOCAL DATA";
 		this.type = type;
@@ -65,9 +65,9 @@ public abstract class Resourse
 
 	/**
 	 * @return 返回资源枚举类型
-	 * @see ResourseType
+	 * @see ResourceType
 	 */
-	public ResourseType getType()
+	public ResourceType getType()
 	{
 		return type;
 	}

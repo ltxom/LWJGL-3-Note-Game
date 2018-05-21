@@ -11,7 +11,7 @@ import java.util.HashMap;
  * @author LTXOM
  * @version 5/20/2018
  */
-public class XMLDataResourse extends DataResource
+public class XMLDataResource extends DataResource
 {
 	private String version;
 	private String encoding;
@@ -25,7 +25,7 @@ public class XMLDataResourse extends DataResource
 	/**
 	 * 通过本地文件构造XML资源对象
 	 * */
-	public XMLDataResourse(String path)
+	public XMLDataResource(String path)
 	{
 		super(path);
 
@@ -37,7 +37,7 @@ public class XMLDataResourse extends DataResource
 	/**
 	 * 通过ArrayList构造XML资源对象，一般用于本地文件资源对象的子集
 	 * */
-	public XMLDataResourse(ArrayList<String> content)
+	public XMLDataResource(ArrayList<String> content)
 	{
 		super(content);
 

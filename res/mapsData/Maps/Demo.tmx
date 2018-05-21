@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1">
- <tileset firstgid="1" source="OutsideBlocks1.tsx"/>
- <tileset firstgid="129" source="OutsideObjects1.tsx"/>
- <tileset firstgid="385" source="OutsideBlocks.tsx"/>
+ <tileset firstgid="1" source="../TilesData/OutsideBlocks1.tsx"/>
+ <tileset firstgid="129" source="../TilesData/OutsideObjects1.tsx"/>
  <layer name="Grass" width="20" height="20">
   <data encoding="csv">
 87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,

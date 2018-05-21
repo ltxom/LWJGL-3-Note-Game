@@ -12,7 +12,7 @@ import static net.ltxom.glGame.util.Terminal.PREFIX;
  * @author LTXOM
  * @version 5/19/2018
  */
-public class DataResource extends Resourse
+public class DataResource extends Resource
 {
 	private ArrayList<String> sourceList;
 
@@ -21,7 +21,7 @@ public class DataResource extends Resourse
 	 */
 	public DataResource(String path)
 	{
-		super(path, ResourseType.DATA);
+		super(path, ResourceType.DATA);
 		sourceList = new ArrayList<String>();
 		BufferedReader bfr = null;
 		try
@@ -55,7 +55,7 @@ public class DataResource extends Resourse
 	 */
 	public DataResource(ArrayList<String> sourceList)
 	{
-		super(ResourseType.DATA);
+		super(ResourceType.DATA);
 		this.sourceList = sourceList;
 
 	}
