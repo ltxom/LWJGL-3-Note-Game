@@ -41,7 +41,7 @@ public class ImgResource extends Resource
 	 */
 	public ImgResource(BufferedImage image)
 	{
-		super(null, ResourceType.IMAGE);
+		super(ResourceType.IMAGE);
 		this.image = image;
 	}
 

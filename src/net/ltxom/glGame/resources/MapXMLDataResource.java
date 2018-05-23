@@ -15,6 +15,7 @@ public class MapXMLDataResource extends XMLDataResource
 	private ArrayList<TilesXMLDataResource> tilesXMLDataResourceList;
 	private ArrayList<Layer> layersList;
 	private ArrayList<Integer> startIndex;
+	private MapTilesImgManager mapTilesImgManager;
 
 	/**
 	 * @param filePath 地图XML文件路径
@@ -30,6 +31,8 @@ public class MapXMLDataResource extends XMLDataResource
 		tilesXMLDataResourceList = new ArrayList<TilesXMLDataResource>();
 		layersList = new ArrayList<Layer>();
 		startIndex = new ArrayList<Integer>();
+
+		int endAt = 0;
 		for (int i = 0; i < this.getMatchMap().size(); i++)
 		{
 			if (this.getMatchMap().get(i).startsWith("tileset, 1"))
@@ -39,9 +42,22 @@ public class MapXMLDataResource extends XMLDataResource
 				startIndex.add(Integer.parseInt(this.getTagParameter(i, "firstgid")));
 			} else if (this.getMatchMap().get(i).startsWith("layer, 0"))
 			{
+				endAt = i;
+				break;
 
-				Layer layer = new Layer(tilesXMLDataResourceList, startIndex, this.getContent(i + 1),
-						this.getTagParameter(i, "name"), Integer.parseInt(this.getTagParameter(i, "width")),
+			}
+		}
+		mapTilesImgManager = new MapTilesImgManager(tilesXMLDataResourceList);
+
+		for (int i = endAt; i < this.getMatchMap().size(); i++)
+		{
+			if (this.getMatchMap().get(i).startsWith("layer, 0"))
+			{
+				Layer layer = new Layer(mapTilesImgManager, 
+						tilesXMLDataResourceList, 
+						startIndex,
+						this.getContent(i + 1), this.getTagParameter(i, "name"),
+						Integer.parseInt(this.getTagParameter(i, "width")),
 						Integer.parseInt(this.getTagParameter(i, "height")));
 				layersList.add(layer);
 			}

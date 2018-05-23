@@ -3,10 +3,14 @@
  */
 package net.ltxom.glGame.resources;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.ltxom.glGame.resources.map.MapTilesImgManager;
+import javax.imageio.ImageIO;
 
 /**
  * 储存贴图XML信息资源，一般与MapXMLDataResource联动
@@ -20,19 +24,19 @@ public class TilesXMLDataResource extends XMLDataResource
 	private String tileName;
 	private int tileWidth;
 	private int tileHeight;
+
 	private int tileCount;
-	private int tileColumns;
-	private int tileRows;
+	private int tileColumns;// x
+	private int tileRows;// y
 
 	private String imgSourcePath;
-	private int imgHeight;
-	private int imgWidth;
+
 
 	private ImgResource imgResource;
 
-	private MapTilesImgManager tilesImgManager;
-
 	private CollidersResource colliders;
+
+	private TileImgResource[][] tilesSet;
 
 	/**
 	 * @param path 贴图XML文件路径
@@ -66,12 +70,13 @@ public class TilesXMLDataResource extends XMLDataResource
 				tileHeight = Integer.parseInt(parametersMap.get("tileheight"));
 				tileCount = Integer.parseInt(parametersMap.get("tilecount"));
 				tileColumns = Integer.parseInt(parametersMap.get("columns"));
+				tileRows = tileCount / tileColumns;
 			} else if (this.getMatchMap().get(i).contains("image"))
 			{
 				HashMap<String, String> parametersMap = this.getTagParameters(i);
 				imgSourcePath = parametersMap.get("source");
-				imgHeight = Integer.parseInt(parametersMap.get("width"));
-				imgWidth = Integer.parseInt(parametersMap.get("height"));
+//				imgHeight = Integer.parseInt(parametersMap.get("width"));
+//				imgWidth = Integer.parseInt(parametersMap.get("height"));
 				endAt = i;
 				break;
 			}
@@ -79,7 +84,8 @@ public class TilesXMLDataResource extends XMLDataResource
 
 		// init image
 		imgResource = new ImgResource("res/mapsData/" + imgSourcePath.substring(3));
-		tilesImgManager = new MapTilesImgManager(tileName, tileColumns, tileRows);
+		// 这里切割并创建BufferedImage保存到二维数组
+		crop();
 
 		// init colliders
 		HashMap<Integer, Double> x = new HashMap<Integer, Double>();
@@ -105,6 +111,21 @@ public class TilesXMLDataResource extends XMLDataResource
 		colliders = new CollidersResource(tileName, x, y, width, height);
 	}
 
+	private void crop()
+	{
+		tilesSet = new TileImgResource[tileRows][tileColumns];
+
+		for (int y = 0; y < tileRows; y++)
+		{
+			for (int x = 0; x < tileColumns; x++)
+			{
+
+				tilesSet[y][x] = new TileImgResource(imgResource.getBufferedImage().getSubimage(x * tileWidth,
+						y * tileHeight, tileWidth, tileHeight), tileName, x, y);
+			}
+		}
+	}
+
 	/**
 	 * @return 返回材质名
 	 * */
@@ -122,8 +143,9 @@ public class TilesXMLDataResource extends XMLDataResource
 		return colliders;
 	}
 
-	public MapTilesImgManager getTilesImgManager()
+	public TileImgResource[][] getTilesSet()
 	{
-		return tilesImgManager;
+		return tilesSet;
 	}
+
 }

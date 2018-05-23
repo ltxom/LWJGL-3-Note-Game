@@ -26,7 +26,7 @@ public abstract class Resource
 	{
 		this.path = path;
 		this.type = type;
-
+		
 		file = new File(path);
 
 		if (!file.exists() || file.isDirectory())

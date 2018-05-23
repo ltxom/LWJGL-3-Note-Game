@@ -3,6 +3,7 @@ package net.ltxom.glGame.resources.map;
 import static net.ltxom.glGame.util.Terminal.PREFIX;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import net.ltxom.glGame.resources.TileImgResource;
 import net.ltxom.glGame.resources.TilesXMLDataResource;
@@ -16,24 +17,13 @@ public class Layer
 	private String layerName;
 	private int layerWidth;
 	private int layerHeight;
-	private ArrayList<TilesXMLDataResource> tilesXMLDataResourceList;
-	private ArrayList<Integer> startIndex;
-	public ArrayList<String> layerContent;
+	private HashMap<Integer, HashMap<Integer, TileImgResource>> imgList;
 
-	public Layer(ArrayList<TilesXMLDataResource> tilesXMLDataResourceList, ArrayList<Integer> startIndex,
-			ArrayList<String> layerContent, String layerName, int layerWidth, int layerHeight)
+	public Layer(MapTilesImgManager mapTilesImgManager, ArrayList<TilesXMLDataResource> tilesXMLDataResourceList,
+			ArrayList<Integer> startIndex, ArrayList<String> layerContent, String layerName, int layerWidth,
+			int layerHeight)
 	{
-		this.tilesXMLDataResourceList = tilesXMLDataResourceList;
-		this.startIndex = startIndex;
-		this.layerName = layerName;
-		this.layerHeight = layerHeight;
-		this.layerWidth = layerWidth;
-		this.layerContent = layerContent;
-		init();
-	}
 
-	private void init()
-	{
 		if (tilesXMLDataResourceList.size() != startIndex.size())
 		{
 			System.err.println(PREFIX + "初始化图层时关键错误，这是由于贴图索引数量与贴图数量不一致导致的");
@@ -44,16 +34,27 @@ public class Layer
 			throw new RuntimeException("Fatal ERROR!");
 		}
 
-		for (int i = 0; i < startIndex.size(); i++)
+		this.layerName = layerName;
+		this.layerHeight = layerHeight;
+		this.layerWidth = layerWidth;
+
+		imgList = new HashMap<Integer, HashMap<Integer, TileImgResource>>();
+		HashMap<Integer, TileImgResource> subList;
+		for (int y = 0; y < layerHeight; y++)
 		{
-			
+			String line = layerContent.get(y);
+			String[] strIds = line.split(",");
+			subList = new HashMap<Integer, TileImgResource>();
+
+			for (int x = 0; x < layerWidth; x++)
+			{
+				subList.put(x, mapTilesImgManager.getImg(Integer.parseInt(strIds[x])));
+			}
+			imgList.put(y, subList);
 		}
+
 	}
-	
-//	public TileImgResource getTileImgResource() {
-		
-//	}
-	
+
 	public String getLayerName()
 	{
 		return layerName;
@@ -69,4 +70,8 @@ public class Layer
 		return layerHeight;
 	}
 
+	public TileImgResource getTileImgResource(int x, int y)
+	{
+		return imgList.get(y + 1).get(x + 1);
+	}
 }
