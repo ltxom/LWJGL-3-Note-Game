@@ -1,6 +1,7 @@
 package net.ltxom.glGame.resources;
 
 import java.util.ArrayList;
+
 import net.ltxom.glGame.resources.map.*;
 
 /**
@@ -53,9 +54,7 @@ public class MapXMLDataResource extends XMLDataResource
 		{
 			if (this.getMatchMap().get(i).startsWith("layer, 0"))
 			{
-				Layer layer = new Layer(mapTilesImgManager, 
-						tilesXMLDataResourceList, 
-						startIndex,
+				Layer layer = new Layer(mapTilesImgManager, tilesXMLDataResourceList, startIndex,
 						this.getContent(i + 1), this.getTagParameter(i, "name"),
 						Integer.parseInt(this.getTagParameter(i, "width")),
 						Integer.parseInt(this.getTagParameter(i, "height")));
@@ -74,4 +73,12 @@ public class MapXMLDataResource extends XMLDataResource
 		return layersList.get(layerIndex);
 	}
 
+	public int getLayerSize()
+	{
+		return layersList.size();
+	}
+	
+	public MapTilesImgManager getMapTilesImgManager() {
+		return mapTilesImgManager;
+	}
 }

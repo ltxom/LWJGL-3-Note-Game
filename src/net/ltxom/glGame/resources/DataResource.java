@@ -1,10 +1,11 @@
 package net.ltxom.glGame.resources;
 
+import static net.ltxom.glGame.util.Terminal.PREFIX;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import static net.ltxom.glGame.util.Terminal.PREFIX;
 
 /**
  * 储存数据资源

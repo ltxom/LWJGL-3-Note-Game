@@ -3,13 +3,13 @@
  */
 package net.ltxom.glGame.resources;
 
+import static net.ltxom.glGame.util.Terminal.PREFIX;
+
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
-import static net.ltxom.glGame.util.Terminal.PREFIX;
 
 /**
  * 储存图像资源
